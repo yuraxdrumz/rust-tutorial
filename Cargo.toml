@@ -1,10 +1,11 @@
 [package]
 name = "hello-rocket"
 version = "0.1.0"
-authors = ["Yuri Khomyakov <yuri.khomyakov@ironsrc.com>"]
+authors = ["Yuri Khomyakov <yurik1776@gmail.com>"]
 
 [dependencies]
 rocket = "0.4.2"
+reqwest = "0.9.22"
 serde = "1.0"
 serde_json = "1.0"
 serde_derive = "1.0"

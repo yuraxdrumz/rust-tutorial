@@ -1,12 +1,11 @@
 use std::io::{Read};
-use std::fs::{File};
 use std::collections::hash_map::DefaultHasher;
 use std::hash::Hasher;
 
 #[derive(Debug)]
 pub struct Chunk {
-  data: Vec<u8>,
-  hash: String,
+  pub data: Vec<u8>,
+  pub hash: String,
 }
 
 pub struct HashedChunker<R> where R:Read {
@@ -14,10 +13,9 @@ pub struct HashedChunker<R> where R:Read {
 }
 
 impl<R> Iterator for HashedChunker<R> where R: Read {
-  // type Item = Chunk<[u8; 1024 * 1024]>;
   type Item = Chunk;
   fn next(&mut self) -> Option<Self::Item> {
-    let mut buffer = [0; 2 * 1024*1024];
+    let mut buffer = [0; 1 * 1024 * 1024];
     let res = self.source.read(&mut buffer);
     match res {
       Ok(count) => {
@@ -29,14 +27,17 @@ impl<R> Iterator for HashedChunker<R> where R: Read {
             hasher.write(&slice);
             let res = hasher.finish();
             let str = format!("{:16x}", res).trim().to_string();
-            print!("{:?}\n", str);
+            // print!("{:?}\n", str);
             let c = Chunk{ data: vec, hash: str };
             Some(c)
         } else {
           None
         }
       },
-      Err(_e) => None,
+      Err(e) => {
+        print!("{0}", e);
+        None
+      },
     }
   }
 }
